@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="de">
+    <!-- ++++++++++++++++++++++++++++++++++++++++ METADATA +++++++++++++++++++++++++++++++++++++++-->
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="Taxgarage / Creatax / Richtax / Tax-Reconciliation.">
+        <meta name="keywords" content="XML-TEI, Taxonomy, Reconciliation, Wikidata">
+        <meta name="author" content="Sabrina S">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Richtax - Start App</title>
+        <link rel="icon" type="image/x-icon" href="{{url_for('static', filename ='img/favicon.ico')}}">
+        <link rel="stylesheet"
+            href="{{url_for('static', filename = 'css/dataTables-bootstrap4-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/font-awesome-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/richtax.css')}}">
+    </head>
+
+    <body>
+        <div class="wrapper">
+        <!-- ++++++++++++++++++++++++++ HEADER WITH NAVIGATION AREA +++++++++++++++++++++++++++-->
+        <header>
+            <!-- navigation area on the top of the site -->
+            <nav class="bg navbar navbar-expand-lg navbar-light fixed-top" id="richtaxnav">
+                <div class="container-md text-white">
+                    <strong>
+                        <a class="navbar-brand" href="{{url_for ('index') }}">
+                            <img class="img-responsive text-white" title="Richtax"
+                                src="{{url_for('static', filename = 'img/logo_richtax.png')}}" alt="RICHTAX" id="logo">
+                        </a>
+                    </strong>
+                    <button class="navbar-toggler navbar-toggler-left" data-toggle="collapse"
+                        data-target="#navbarMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarMenu">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('index')}}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('input')}}">Quickstart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('documentation')}}">Documentation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('impressum')}}">Imprint</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- +++++++++++++++++++++++++++++++ MAIN WEBSITE AREA +++++++++++++++++++++++++++++++++++-->
+        <main>
+            <div class="container">
+                <div class="row">
+                    <h1>RICHTAX</h1>
+                    <section class="content">
+                        <h3>Input</h2>
+                            <!-- placeholder for different error messages in case the insertion or upload of the xml file failed and the processing does not start -->
+                            <p><b>{{ missing_msg }}  {{ empty_msg }} {{ upload_error_msg }} {{ error_msg }} {{ empty_element_error_msg }} {{ nested_error_msg }} {{ data_problem_error_msg }}
+                               <a href="{{url_for('input')}}">{{ start_over_msg }}</a></b></p>
+
+
+                        <!-- +++++++++++++++++++++++++++++++ TAB BUTTON SECTION +++++++++++++++++++++++++++++++++++ -->
+                        <!-- tab selection with buttons for copy-paste insertion, upload or manual creation of a taxonomy -->
+                        <div>
+                            <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active btn-rt" id="insert-tab"
+                                        data-bs-toggle="pill" data-bs-target="#insert" type="button"
+                                        role="tab" aria-controls="insert" aria-selected="true"
+                                        >Insert</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="upload-tab" data-bs-toggle="pill"
+                                        data-bs-target="#upload" type="button" role="tab"
+                                        aria-controls="upload" aria-selected="false">Upload</button>
+                                </li>
+                                <li class="nav-item" role="presentation" data-bs-toggle="tooltip" data-bs-placement="top" title="Not available yet">
+                                    <button class="nav-link btn disabled" id="create-tab" data-bs-toggle="pill"
+                                        data-bs-target="#create" type="button" role="tab"
+                                        aria-controls="create" aria-selected="false" tabindex="-1" aria-disabled="true">Create
+                                            manually</button>
+                                </li>
+                            </ul>
+
+                            <!-- +++++++++++++++++++++++++++++++ TAB SECTION +++++++++++++++++++++++++++++++++++ -->
+                            <!-- tab section with either insertion field, upload area or taxonomy creation form -->
+                            <div class="tab-content" id="pills-tabContent">
+
+                                <!-- ++++++++++++++++++++++++ FIRST TAB (INSERT) ++++++++++++++++++++++++++++++++-->
+                                <!-- field area to paste a copied taxonomy -->
+                                <div class="tab-pane fade show active" id="insert" role="tabpanel"
+                                    aria-labelledby="insert-tab">
+
+                                    <!-- form defining the route of the app that should be used when submitting the inserted taxonomy -->
+                                    <form method="post" action="/insert">
+                                        <p class="instruction-text">Make sure your taxonomy is valid and meets the required standard (see <a href="{{url_for('documentation')}}" target="_blank">Documentation)</a>.</p>
+                                        <div class="input-group mb-3 py-2" id="inputInsert">
+                                            <span class="input-group-text input-text">Insert
+                                                <br />your <br />taxonomy</span>
+                                            <textarea class="form-control" id="insertXML"
+                                                aria-label="insert-area" name="insertXML"></textarea>
+                                        </div>
+
+                                        <!-- language choice area for insertions -->
+                                        <p class="instruction-text">Choose the language of your taxonomy. </p>
+                                        <div class="input-group" id="language_choice">
+                                            <fieldset name="language" id="lang_choice_insert">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="language" id="en" value="en" checked>
+                                                <label class="form-check-label" for="en">
+                                                English
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="language" id="de" value="de">
+                                                <label class="form-check-label" for="de">
+                                                German
+                                                </label>
+                                            </div>
+                                        </fieldset>
+                                        </div>
+
+                                        <div class="pt-4">
+                                            <p class="mb-0">Please be aware that the processing could take a while (about 1-2 seconds per term).<br/> Do not interrupt the process by clicking anywhere on this page again.</p>
+                                        </div>
+
+                                        <!-- submit button to start the processing of the inserted taxonomy -->
+                                        <div class="py-4">
+                                            <button type="submit" class="btn btn-rt">Process
+                                                data</button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                                <!-- +++++++++++++++++++++++++++++++ SECOND TAB (UPLOAD) ++++++++++++++++++++++++++++ -->
+                                <!-- upload fields for the upload from locally saved taxonomies -->
+                                <div class="tab-pane fade" id="upload" role="tabpanel"
+                                    aria-labelledby="upload-tab">
+
+                                    <!-- form defining the route of the app that should be used when submitting the uploaded taxonomy -->
+                                    <form method="post" enctype="multipart/form-data" action="/upload">
+                                        <p class="instruction-text">Upload your TEI file that contains a taxonomy. <br/>To obtain a useful result, make sure it is a valid document (see <a href="{{url_for('documentation')}}" target="_blank">Documentation)</a></p>
+                                    <div class="input-group mb-3 py-2" id="upload-input">
+                                        <input type="file" name="uploadXML" class="form-control filestyle" id="uploadXML" accept=".xml">
+                                    </div>
+
+                                    <!-- language choice area for uploads -->
+                                    <p class="instruction-text">Choose the language of your taxonomy. </p>
+                                    <div class="input-group" id="language_choice">
+
+                                        <fieldset name="language" id="lang_choice_upload">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="language" id="en" value="en" checked>
+                                            <label class="form-check-label" for="en">
+                                            English
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="language" id="de" value="de">
+                                            <label class="form-check-label" for="de">
+                                            German
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                    </div>
+                                    <div class="pt-4">
+                                        <p class="mb-0">Please be aware that the processing could take a while (about 1-2 seconds per term).<br/> Do not interrupt the process by clicking anywhere on this page again.</p>
+                                    </div>
+
+                                    <!-- submit button to start the processing of the uploaded taxonomy -->
+                                    <div class="py-4">
+                                        <button type="submit" class="btn btn-rt">Process
+                                            data</button>
+                                    </div>
+                                    </form>
+                                </div>
+
+                                <!-- +++++++++++++++++++++++++++++++ THIRD TAB (CREATE) ++++++++++++++++++++++++++++ -->
+                                <!-- ++++++++++++++++++++++++++++++++++ DISABLED !!! +++++++++++++++++++++++++++++++ -->
+                                <!-- fields to generate taxonomies -->
+                                <div class="tab-pane fade" id="create" role="tabpanel"
+                                    aria-labelledby="create-tab">
+                                    <div>
+                                        <!-- indication that this option is not available yet  -->
+                                        <div class="work-in-progress">
+                                            <img id="workinprogress" src="{{ url_for('static', filename='img/workinprogress.svg') }}" alt="Work in Progress"
+                                            class="rounded" />
+                                        </div>
+                                        <p class="copyright-img">Icon made from <a
+                                            href="http://www.onlinewebfonts.com/icon">Icon Fonts</a> is
+                                             licensed by CC BY 3.0</p>
+                                    </div>
+
+                                    <!-- form for the generation of a new taxonomy -->
+                                    <form class="py-4">
+                                        <div class="mb-3">
+                                            <label for="taxonomy" class="form-label">Name of
+                                                Taxonomy</label>
+                                            <input id="taxonomy" aria-describedby="taxHelp">
+                                            <div id="taxHelp" class="form-text">Please choose a name
+                                                for your taxonomy.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="category" class="form-label"
+                                                >Category</label>
+                                            <input id="category" aria-describedby="catHelp">
+                                            <div id="catHelp" class="form-text">Please choose a name
+                                                for your category.</div>
+                                        </div>
+                                        <div class="py-4">
+                                            <button type="submit" class="btn btn-rt">Process
+                                                data</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+ <!-- +++++++++++++++++++++++++++++++  FOOTER WITH REFERENCES +++++++++++++++++++++++++++++++++++ -->
+ <footer class="footer mt-auto">
+
+    <!-- responsibility statement and contact options -->
+    <div class="container-lg-expand bg-gradient ">
+        <div
+            class="container-md footerwrap d-flex flex-wrap justify-content-between align-items-center">
+            <div class="text-white">
+                <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" id="licence-logo" /></a><br /><p class="licence-text m-0">This work is licensed under a <br/><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0 Intern. License</a>.</p>
+            </div>
+            <div class="footerlogo p-3">
+                <a href="https://www.uni-graz.at/de/" target="_blank">
+                    <img title="Universität Graz"
+                        src="{{url_for('static', filename = 'img/logo_uni.jpg')}}"
+                        alt="Universität Graz">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+
+ <!-- +++++++++++++++++++++++++++++++ EMBEDDED SCRIPTS +++++++++++++++++++++++++++++++++++ -->
+<script src="{{url_for('static', filename = 'js/jquery-3.4.1.slim.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/popper.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/jquery.dataTables.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/bootstrap-filestyle.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/richtax.js')}}"></script>
+
+<!-- script for changing the text in the upload field, because the default setting uses the browser language -->
+<script>$(":file").filestyle();</script>
+
+</body>
+</html>
+

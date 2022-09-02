@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="de">
+    <!-- ++++++++++++++++++++++++++++++++++++++++ METADATA +++++++++++++++++++++++++++++++++++++++-->
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="Taxgarage / Creatax / Richtax / Tax-Reconciliation.">
+        <meta name="keywords" content="XML-TEI, Taxonomy, Reconciliation, Wikidata">
+        <meta name="author" content="Sabrina S">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Richtax - Imprint</title>
+        <link rel="icon" type="image/x-icon" href="{{url_for('static', filename ='img/favicon.ico')}}">
+        <link rel="stylesheet"
+            href="{{url_for('static', filename = 'css/dataTables-bootstrap4-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/font-awesome-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/richtax.css')}}">
+    </head>
+
+    <body>
+        <div class="wrapper">
+        <!-- ++++++++++++++++++++++++++ HEADER WITH NAVIGATION AREA +++++++++++++++++++++++++++-->
+        <header>
+            <!-- navigation area on the top of the site -->
+            <nav class="bg navbar navbar-expand-lg navbar-light fixed-top" id="richtaxnav">
+                <div class="container-md text-white">
+                    <strong>
+                        <a class="navbar-brand" href="{{url_for ('index') }}">
+                            <img class="img-responsive text-white" title="Richtax"
+                                src="{{url_for('static', filename = 'img/logo_richtax.png')}}" alt="RICHTAX" id="logo">
+                        </a>
+                    </strong>
+                    <button class="navbar-toggler navbar-toggler-left" data-toggle="collapse"
+                        data-target="#navbarMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarMenu">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('index')}}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('input')}}">Quickstart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('documentation')}}">Documentation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('impressum')}}">Imprint</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- +++++++++++++++++++++++++++++++ MAIN WEBSITE AREA +++++++++++++++++++++++++++++++++++-->
+        <main>
+            <div class="container">
+                <div class="row">
+                    <h1>RICHTAX</h1>
+                    <section class="content">
+                        <h3>Imprint</h3>
+                        <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++ GENERAL IMPRINT INFORMATION ++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <p>Obligation to inform according to §5 of the Austrian E-Commerce Act and obligation to disclose according to §25 of the Austrian Media Act.</p>
+
+                        <h4>Media Owner:</h4>
+
+                                <p class="my-0">Sabrina Strutz</p>
+                                <p><a href="mailto:s.strutz@edu.uni-graz.at">s.strutz@edu.uni-graz.at</a></p>
+                                <p><a href="https://github.com/strubrina/richtax-app"><img class="img-responsive" title="Github"
+                                    src="{{url_for('static', filename = 'img/github.svg')}}" alt="Github" id="github-logo"></a></p>
+
+
+                        <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++ LEGAL INFORMATION +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <h4>Disclaimer</h4>
+
+                        <p>The media owner compiles and edits the information published in this web application to the best of its knowledge with the intention of providing users with a web application for their private use. All information made available via hyperlink or other internet inherent technologies that is not within the publisher’s immediate field of activity remains under the responsibility of its respective publisher.
+                        The media owner denies any and every liability for information found therein.</p>
+
+                        <p>With respect to production liability law, the media owner warns that errors in content cannot be fully eliminated, and thus no liability is assumed for the information provided or for errors arising on account of the media owner’s sources or processing.
+                        The media owner disclaims any and every liability for content and its effects. In particular, the media owner cannot be directly or indirectly held accountable for any and every direct or indirect consequence arising from the use or misuse of this web application.</p>
+
+                        <p>The media owner reserves the right to remove any content that it deems to be indecent, unethical, illegal or damaging.
+                        If you notive any problematic content, please don't hesitate to contact the media owner.</p>
+
+                        <h4>Legal Privacy Notice</h4>
+
+                        <p>The media owner of this page does not collect any personal or sensitive data according to the GDPR. Also, the uploaded files are not saved to any public server but only to your private device that is used for the execution of this app.</p>
+
+
+                        <h4>Copyright</h4>
+
+                        <p>Contents (images, illustrations and texts) published on these websites by the media owner are subject to Austrian copyright laws.
+                        Reproduction, editing, distribution as well as the use of any kind outside the scope of the copyright law require a written permission of the author or originator. Downloads and copies of this web application are permitted for private use only. The commercial use of our contents without permission of the originator is prohibited.</p>
+                        <p>If you notice any violations of copyright law, please inform us. Such contents will be removed immediately.</p>
+
+
+
+                    </section>
+                </div>
+            </div>
+        </main>
+
+        <!-- +++++++++++++++++++++++++++++++  FOOTER WITH REFERENCES +++++++++++++++++++++++++++++++++++ -->
+        <footer class="footer mt-auto">
+
+            <!-- responsibility statement and contact options -->
+            <div class="container-lg-expand bg-gradient ">
+                <div
+                    class="container-md footerwrap d-flex flex-wrap justify-content-between align-items-center">
+                    <div class="text-white">
+                        <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" id="licence-logo" /></a><br /><p class="licence-text m-0">This work is licensed under a <br/><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0 Intern. License</a>.</p>
+                    </div>
+                    <div class="footerlogo p-3">
+                        <a href="https://www.uni-graz.at/de/" target="_blank">
+                            <img title="Universität Graz"
+                                src="{{url_for('static', filename = 'img/logo_uni.jpg')}}"
+                                alt="Universität Graz">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+         <!-- +++++++++++++++++++++++++++++++ EMBEDDED SCRIPTS +++++++++++++++++++++++++++++++++++ -->
+        <script src="{{url_for('static', filename = 'js/jquery-3.4.1.slim.min.js')}}"></script>
+        <script src="{{url_for('static', filename = 'js/popper.min.js')}}"></script>
+        <script src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+        <script src="{{url_for('static', filename = 'js/jquery.dataTables.min.js')}}"></script>
+        <script src="{{url_for('static', filename = 'js/richtax.js')}}"></script>
+
+    </body>
+</html>

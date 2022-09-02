@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="de">
+    <!-- ++++++++++++++++++++++++++++++++++++++++ METADATA +++++++++++++++++++++++++++++++++++++++-->
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="Taxgarage / Creatax / Richtax / Tax-Reconciliation.">
+        <meta name="keywords" content="XML-TEI, Taxonomy, Reconciliation, Wikidata">
+        <meta name="author" content="Sabrina S">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Richtax - Documentation</title>
+        <link rel="icon" type="image/x-icon" href="{{url_for('static', filename ='img/favicon.ico')}}">
+        <link rel="stylesheet"
+            href="{{url_for('static', filename = 'css/dataTables-bootstrap4-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/font-awesome-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/richtax.css')}}">
+    </head>
+
+    <body>
+        <div class="wrapper">
+        <!-- ++++++++++++++++++++++++++ HEADER WITH NAVIGATION AREA +++++++++++++++++++++++++++-->
+        <header>
+            <!-- navigation area on the top of the site -->
+            <nav class="bg navbar navbar-expand-lg navbar-light fixed-top" id="richtaxnav">
+                <div class="container-md text-white">
+                    <strong>
+                        <a class="navbar-brand" href="{{url_for ('index') }}">
+                            <img class="img-responsive text-white" title="Richtax"
+                                src="{{url_for('static', filename = 'img/logo_richtax.png')}}" alt="RICHTAX" id="logo">
+                        </a>
+                    </strong>
+                    <button class="navbar-toggler navbar-toggler-left" data-toggle="collapse"
+                        data-target="#navbarMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarMenu">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('index')}}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('input')}}">Quickstart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('documentation')}}">Documentation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('impressum')}}">Impressum</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- +++++++++++++++++++++++++++++++ MAIN WEBSITE AREA +++++++++++++++++++++++++++++++++++-->
+        <main>
+            <div class="container">
+                <div class="row">
+                    <h1>RICHTAX</h1>
+                    <section class="content">
+                         <!-- +++++++++++++++++++++++++++++++ DOCUMENTATION AND TIPPS +++++++++++++++++++++++++++++++++++-->
+                        <h3>Documentation</h3>
+
+                        <!-- ++++++++++++++++++++++++++++++++++++++++ Desciption of the Richtax Tool and workflow of the web app +++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <h4>Scope of the Richtax Tool</h4>
+                        <p>What is this tool for? This web application was build to help anybody who is working with taxonomies in XMLfiles - almost exclusively TEI conform taxonomies - to enrich his/her data with data from Wikidata as a source of Linked Open Data. It should especially provide an easy-to-handle interface for a custom-made enrichment and reconciliation. Instead of entering every term manually into Wikidata to find suitable references, users might just insert or upload their taxonomy to find out what data ressources Wikidata has to offer for your entries. Of course, the program can not decide which is the best fitting term, but with only a few click you can tell the Richtax App which Wikidata ressources to reference and link to your taxonomy entries.</p>
+                        <img class="img-responsive col-xs-12 text-white app-pic zoom" title="Input"
+                        src="{{url_for('static', filename = 'img/app_input.png')}}" alt="Input"/>
+                        <img class="img-responsive col-xs-12 text-white app-pic zoom" title="Enrichment"
+                        src="{{url_for('static', filename = 'img/app_enrich.png')}}" alt="Enrichment"/>
+                        <img class="img-responsive col-xs-12 text-white app-pic zoom" title="Input"
+                        src="{{url_for('static', filename = 'img/app_output.png')}}" alt="Input"/>
+
+                        <h4>App Function</h4>
+                        <p>How does the app work? This app allows you to insert a copied abstract that contains your taxonomy or to upload an XML file in TEI format or just a plain taxonomy in an XML file. The input data then will be examined and in case of any problems with the upload, you will receive an error message. Input problems might include a missing taxonomy, an empty taxonomy, an invalid document or taxonomy, empty &lt;category&gt;, &lt;catDesc&gt;, or &lt;term&gt; elements, text data at the wrong place or nested elements, etc.</p>
+                        <p>However, if everything is fine with your input, the app will retrieve all the text data that it can find in &lt;catDesc&gt; or &lt;term&gt; elements and also the value of the @xml:id. For english taxonomies the app will generate different spellings as far as the first letter is concerned. For example it will look for "poetry", but also for "Poetry", because these two search terms lead to different results when you query Wikidata. As the search will almost exclusively concern nouns for German the workflow provides only a manipulation of the data in terms of capitalization. A SPARQLWrapper then processes the different search terms that are related to a single taxonomy entry and queries the Wikidata API. The customized query of the Richtax App looks like this:</p>
+                        <img class="img-responsive col-xs-12 text-white zoom-small" title="Wikidata Query"
+                        src="{{url_for('static', filename = 'img/query.png')}}" alt="Wikidata Query" id="query-pic"/>
+                        <p>The user then get's an information about the hit rate and can proceed to the results. The app generates a table for every entry of your taxonomy and provides you with further details about the results. You can find the Q Identifier, the Wikidata label, a description that helps you get some context, a Link to the Wikidata ressource, and the very last column will show you the search term that was used in the query. The user may now select the terms that best fit his/her taxonomy entries. For every taxonomy entry the Q Identifier will then be stored together with the @xml:id. Some search terms might also not produce any matches. This will be displayed as well.</p>
+                        <p>Now the user needs to decide which abbreviation should be used for the Wikidata namespace that will replace the Wikidata URL. Now the prorgam will write only the namespace you entered as value to the @corresp attribute followed by the Wikidata Q Identifier.</p>
+                        <p>When the user finishes with the individual manipulation of the data, the program will add the selected Wikidata references to the corresponding taxonomy entries and it will skip all the taxonomy entries without results or without any selection information. The app provides the output file via a download option and a textarea from which the user can copy the  &lt;prefixDef&gt; snippet that should be inserted into the taxonomy file as well.</p>
+
+                        <!-- +++++++++++++++++++++++++++++++++++++++++ Helpful instructions for users to look at if the app does not work  ++++++++++++++++++++++++++++++++++++++++++++++++++-->
+
+                        <h4>Structure of your Taxonomy</h4>
+                        <p>How does the input data have to look like to work this app? As the options how to organize your taxonomy are extremly extensive, this tool is not able to handle every taxonomy. So, please get aquainted with the structural design of taxonomies that can be processed by this app. Otherwise you might not get the results you want or even crash the app.</p>
+                        <ul class="list-group" style="list-style-type: disc;">
+                            <li  class="list-group-item"><div class="imagefloat img-portrait"><img
+                                src="{{url_for('static', filename = 'img/patience.png')}}"
+                                alt="Jumping dot"
+                                class="docu-pic zoom-small"
+                                title="Jumping dot" /></div><p class="list-head">RULE #1</p><p>First of all, <b>please be patient</b> with this app. The processing might take one or two seconds per entry. <br/>So, when you click "Process data" after inserting or uploading your taxonomy and there are more than ten search terms to process, just lean back a bit and take a deep breath :) </p><p>If you are not sure, if the app crashed or still processes your data, just have a glance at the top of your browser tab: if you see a little dot jumping continously from left to right, your input is just being processed.</p></li>
+                            <li  class="list-group-item"><p class="list-head">RULE #2</p><p></p>You may insert or upload a <b>valid</b> taxonomy in a TEI file or a taxonomy in a random xml file that meets certain criteria.</p></li>
+                            <li  class="list-group-item"><p class="list-head">RULE #3</p><p></p>You should insert or upload <b>only one taxonomy (TODO???) at a time.</b></p></li>
+                            <li  class="list-group-item"><div class="imagefloat img-portrait"><img
+                                src="{{url_for('static', filename = 'img/category.png')}}"
+                                alt="Category"
+                                class="docu-pic zoom"
+                                title="Category" /></div><p class="list-head">RULE #4</p><p></p>There have to be <b>&lt;category&gt;</b> elements inside your &lt;taxonomy&gt;. </p><p>Taxonomies with text data inside the &lt;category&gt; element would not be valid in a TEI document and therefore will not be processed.</p></li>
+                            <li  class="list-group-item"><div class="imagefloat img-portrait"><img
+                                src="{{url_for('static', filename = 'img/xmlid.png')}}"
+                                alt="XMLID"
+                                class="docu-pic zoom"
+                                title="XMLID" /></div><p class="list-head">RULE #5</p><p></p>All the &lt;category&gt; elements do need an attribute with an <b>@xml:id</b>. To decrease the number of possible results also the value of the xml:id will be taken as a search term - just in case, it might carry some meaningful content. </p><p>Taxonomies without xml:ids will not be processed as the program also needs them to recompose your taxonomy.</p></li>
+                            <li class="list-group-item"><div class="imagefloat img-portrait"><img
+                                src="{{url_for('static', filename = 'img/corresp.png')}}"
+                                alt="Reference"
+                                class="docu-pic zoom"
+                                title="Reference" /></div><p class="list-head">RULE #6</p><p></p>Make sure, your &lt;category&gt; elements have <b>no @corresp</b> attributes yet. The app uses the @corresp attributes to store the Wikidata Q Identifier in it and any other value would be overwritten.</p></li>
+                            <li  class="list-group-item"><div class="imagefloat img-portrait"><img
+                                src="{{url_for('static', filename = 'img/catdesc_term.png')}}"
+                                alt="CatDesc and-or Term"
+                                class="docu-pic zoom-small"
+                                title="CatDesc and-or Term" /></div><p class="list-head">RULE #7</p><p></p>The &lt;category&gt; elements need to contain <b>&lt;catDesc&gt;</b> elements which either contain text data - a single word or a compound word of maximum three words, or it may contain a <b>&lt;term&gt;</b> element which contains the text data as described. This text data inside the &lt;catDesc&gt; or the &lt;term&gt; element is the data that will be processed and looked for in a Wikidata query. Taxonomies that do not contain a &lt;catDesc&gt; or a &lt;term&gt; element ( the latter always inside a &lt;catDesc&gt; element) will not be processed. </p><p>However, besides these elements you may have any other element like for example a &lt;bibl&gt; element inside the &lt;category&gt; element. They will not be processed, but also should do no harm as long as they have a valid format.</p></li>
+                            <li  class="list-group-item"><p class="list-head">RULE #8</p><p>It is also important to have the <b>same structure for all elements</b> in your taxonomy. Do not use only a &lt;catDesc&gt; element in one &lt;category&gt; element and maybe &lt;catDesc&gt; together with &lt;term&gt; in another &lt;category&gt; element. This would also make your taxonomy unprocessable for the Richtax App.</p></li>
+                        </ul>
+
+                        <p class="mt-5">As for us it's often easier to process virtual data, you can find all the rules from above in this model of an ideal input: </p>
+                        <img class="img-responsive col-xs-6 text-white tax-templ zoom-small" title="Taxonomy template (with catDesc)"
+                        src="{{url_for('static', filename = 'img/tax_templ_catDesc.png')}}" alt="Taxonomy template (with catDesc)" class="tax_datDesc_template">
+                        <img class="img-responsive col-xs-6 text-white tax-templ zoom-small" title="Taxonomy template (with term)"
+                        src="{{url_for('static', filename = 'img/tax_templ_term.png')}}" alt="Taxonomy template (with term)" id="tax_term_template">
+
+                        <h4>Selection of Wikidata Q Identifier</h4>
+                        <p>What selection options are there? The Richtax App provides you with the information that was retrieved from Wikidata. For every single taxonomy entry you may want to choose one Wikidata ressource that best represents your taxonomy entry and provides more context for your entry. The radio buttons let you select only one option per taxonomy entry and if you have chosen the wrong Wikidata ressource you can just undo your selection by choosing another Wikidata entry or by selecting "Cancel selection". The latter one will just guarantee that this taxonomy entry will not be enriched with a Wikidata reference.</p>
+
+                        <h4>Namespace</h4>
+                        <p>What about the namespace section? Well, last but not least you can (and even have to) decide on an abbreviation that replaces the Wikidata URL. Every single reference usually starts with "https://www.wikidata.org/wiki/" followed by the Q Identifier. The "apple" as a fruit for instance can be found with the unique reference: https://www.wikidata.org/wiki/Q89 or the orange holds the URL https://www.wikidata.org/wiki/Q13191. As we want to avoid redundant information and the listing of the whole Wikidata link in the @corresp attribute of every single taxonomy entry, we will just put this information into a prefix definiton. The &lt;prefixDef&gt; is part of a &lt;listPrefixDef&gt; which is nested into the &lt;classDecl&gt;. Inside the &lt;classDecl&gt; resides our taxonomy as well.</p>
+                        <img class="img-responsive col-xs-12 text-white zoom-small" title="Prefix with namespace"
+                        src="{{url_for('static', filename = 'img/prefix.png')}}" alt="Prefix with namespace" id="prefix-pic"/>
+                        <p>As some users only insert a taxonomy without the parent nodes and others upload a whole TEI file, the Richtax App will just provide you with the code snippet, so you can paste it into your taxonomy or do whatever you wish to do with it :)</p>
+
+                        <h4>Further Developement and Maintenance </h4>
+                        <p>This is or let's already say was "only" a small test project and my first contact with Flask web applications and Jinja. Also, as my Python skills are still very basic I am pretty sure the functions of this app could have been written in a much less complex and nicer style. However, everyone is free to improve this app. I might not want to see it ever again and therefore can not guarantee any error fixing in the future. [Sabrina S., September 2nd, 2022.]</p>
+
+                    </section>
+                </div>
+            </div>
+        </main>
+
+ <!-- +++++++++++++++++++++++++++++++  FOOTER WITH REFERENCES +++++++++++++++++++++++++++++++++++ -->
+ <footer class="footer mt-auto">
+
+    <!-- responsibility statement and contact options -->
+    <div class="container-lg-expand bg-gradient ">
+        <div
+            class="container-md footerwrap d-flex flex-wrap justify-content-between align-items-center">
+            <div class="text-white">
+                <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" id="licence-logo" /></a><br /><p class="licence-text m-0">This work is licensed under a <br/><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0 Intern. License</a>.</p>
+            </div>
+            <div class="footerlogo p-3">
+                <a href="https://www.uni-graz.at/de/" target="_blank">
+                    <img title="Universität Graz"
+                        src="{{url_for('static', filename = 'img/logo_uni.jpg')}}"
+                        alt="Universität Graz">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+
+ <!-- +++++++++++++++++++++++++++++++ EMBEDDED SCRIPTS +++++++++++++++++++++++++++++++++++ -->
+<script src="{{url_for('static', filename = 'js/jquery-3.4.1.slim.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/popper.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/jquery.dataTables.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/richtax.js')}}"></script>
+
+</body>
+</html>
+

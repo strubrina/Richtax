@@ -1,0 +1,426 @@
+/***generic***/
+
+h1 {
+    padding-top: 30px;
+    font-weight: 400;
+    font-size: 2rem;
+    color: indigo;
+}
+
+h2 {
+    padding-bottom: 15px;
+    font-weight: 250;
+    font-size: 1.8rem;
+    color: indigo;
+}
+
+h3 {
+    font-size: 1.6rem;
+    padding-bottom: 10px;
+}
+
+h4 {
+    font-size: 1.4rem;
+    padding-bottom: 10px;
+    padding-top: 20px;
+}
+
+ul {
+    padding-left: 0;
+}
+
+
+body {
+    padding-top: 120px;
+    padding-bottom: 200px;
+}
+
+header {
+    flex-shrink: 0;
+}
+
+main {
+    flex-grow: 1;
+    overflow: auto;
+    min-height: 2em;
+}
+
+footer {
+    flex-shrink: 0;
+}
+
+.wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+button {
+    color: white !important;
+    background-color: darkmagenta !important;
+    border-color: indigo !important;
+    border: 1px solid darkmagenta !important;
+    margin: 1px !important;
+}
+
+button:hover {
+    background-color: indigo !important;
+}
+
+button.active {
+    background-color: indigo !important;
+}
+
+a {
+    color: #296478;
+ }
+
+
+
+/***header***/
+
+#richtaxnav {
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+#logo {
+    display: inline-block;
+    max-width: 50%;
+    border-radius: 5%;
+}
+
+.row {
+    margin-left: 0;
+}
+
+
+
+/***navigation***/
+
+.bg {
+    background-color: indigo;
+}
+
+
+
+/***main***/
+
+.content {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    text-align: justify;
+}
+
+
+
+/***placeholder***/
+
+.work-in-progress {
+    display: flex;
+    justify-content: left;
+    padding-bottom: 10px;
+}
+
+#workinprogress {
+    max-width: 25%;
+    text-align: center;
+}
+
+.copyright-img {
+    font-size: 0.8em;
+    color: darkgrey;
+    text-align: left;
+    margin: 0;
+}
+
+
+
+/***index page***/
+
+#app-workflow {
+    width: 80%;
+    padding-bottom: 20px;
+}
+
+ol li {
+    padding: 0.2rem 0rem;
+}
+
+.zoom-small {
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+    cursor: -moz-zoom-in;
+    cursor: zoom-in;
+}
+
+.zoom-small:hover,
+.zoom-small:active,
+.zoom-small:focus {
+    -moz-transform: scale(1.25);
+    -webkit-transform: scale(1.25);
+    transform: scale(1.25);
+    -o-transform: scale(1.25);
+    margin-left: -20px;
+    margin-top: 80px;
+    position: relative;
+    z-index: 100;
+}
+
+@media screen and (max-width : 1000px) {
+
+.zoom-small:hover,
+.zoom-small:active,
+.zoom-small:focus {
+    margin-left: -10px;
+ }
+}
+
+
+
+/***input and output forms***/
+
+#inputInsert {
+    min-height: 150px;
+    width: 60%;
+}
+
+#outputDownload {
+    min-height: 200px;
+    width: 60%;
+}
+
+.input-group {
+    margin-top: 10px;
+    position: relative;
+}
+
+#copyButton {
+    cursor: pointer;
+    background: #f1bb3a;
+}
+
+.instruction-text {
+    font-weight: 600;
+}
+
+input.form-control {
+    background-color: white !important;
+}
+
+#upload-input {
+    max-width: 60%;
+}
+
+#upload-input .btn-secondary {
+    background-color: #e9ecef;
+    border-color: #ced4da;
+}
+
+#upload-input .btn-secondary span{
+    color: black;
+}
+
+
+
+/***result or retry***/
+
+
+.success {
+    color: #daa723;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.error-msg {
+    color: darkred;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+#start-over-btn {
+    text-decoration: none;
+}
+
+
+
+/***datatables***/
+
+.tableheader {
+    padding-top: 30px;
+    padding-bottom: 10px;
+}
+
+th,
+td {
+    border: 1px solid lightgray;
+    border-collapse: collapse;
+}
+
+.hidden-rows {
+    display: none;
+}
+
+#taxdata > tbody > tr > td:last-child {
+    display: none;
+}
+
+#taxdata > thead > tr > th:last-child {
+    display: none;
+}
+
+
+/*** download ***/
+
+#download-section {
+    margin: 2rem 0rem;
+}
+
+#outputDownload textarea {
+    font-size: 0.9rem;
+}
+
+
+
+/*** documentation ***/
+
+/**ul.list-group {
+    list-style-type: disc !important;
+    max-width: 80%;
+}**/
+
+.list-group li {
+    padding: 1.5rem;
+}
+
+.list-head {
+    font-weight: 600;
+    color: indigo;
+}
+
+.app-pic {
+    max-width: 33%;
+    padding: 2rem 0rem;
+}
+
+#query-pic{
+    max-width: 80%;
+    margin: 1rem 0rem;
+}
+
+#prefix-pic {
+    max-width: 50%;
+    margin: 1rem 0rem;
+}
+
+.tax-templ {
+    max-height: 800px;
+    padding: 20px;
+}
+
+.imagefloat {
+    float: right;
+    margin: 20px 0 5px 10px;
+    padding: 0 0 0 10px;
+}
+
+.img-portrait {
+    width: 20%;
+}
+
+.docu-pic {
+    width: 100%;
+}
+
+.zoom {
+    -webkit-transition: all 0.35s ease-in-out;
+    -moz-transition: all 0.35s ease-in-out;
+    transition: all 0.35s ease-in-out;
+    cursor: -moz-zoom-in;
+    cursor: zoom-in;
+}
+
+.zoom:hover,
+.zoom:active,
+.zoom:focus {
+    -moz-transform: scale(2.5);
+    -webkit-transform: scale(2.5);
+    transform: scale(2.5);
+    -o-transform: scale(2.5);
+    margin-left: -20px;
+    margin-top: 80px;
+    position: relative;
+    z-index: 100;
+}
+
+@media screen and (max-width : 1000px) {
+
+.zoom:hover,
+.zoom:active,
+.zoom:focus {
+    margin-left: -10px;
+ }
+}
+
+
+
+
+/***impressum***/
+
+#github-logo {
+    height: 3rem;
+}
+
+#licence-logo {
+    height: 2rem;
+
+}
+
+.licence-text {
+    font-size: 0.8rem;
+}
+
+
+
+/***footer***/
+
+footer {
+    padding-top: 30px;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 160px;
+  }
+
+.footerwrap {
+    width: 100%;
+    flex-wrap: wrap;
+    /*padding-left: 20px;
+    padding-right: 20px;*/
+    ;
+}
+
+.footerlogo img {
+    max-height: 100px;
+    max-width: 300px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.bg-gradient {
+    box-sizing: border-box;
+    background-color: indigo;
+    background-image: linear-gradient(#483D8B, #663399);
+    padding-bottom: 20px;
+
+}
+.color {
+    background-color: #483D8B;
+}

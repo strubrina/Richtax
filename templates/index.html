@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="de">
+    <!-- ++++++++++++++++++++++++++++++++++++++++ METADATA +++++++++++++++++++++++++++++++++++++++-->
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="Taxgarage / Creatax / Richtax / Tax-Reconciliation.">
+        <meta name="keywords" content="XML-TEI, Taxonomy, Reconciliation, Wikidata">
+        <meta name="author" content="Sabrina S">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Richtax</title>
+        <link rel="icon" type="image/x-icon" href="{{url_for('static', filename ='img/favicon.ico')}}">
+        <link rel="stylesheet"
+            href="{{url_for('static', filename = 'css/dataTables-bootstrap4-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/font-awesome-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/richtax.css')}}">
+    </head>
+
+    <body>
+        <div class="wrapper">
+        <!-- ++++++++++++++++++++++++++ HEADER WITH NAVIGATION AREA +++++++++++++++++++++++++++-->
+        <header>
+            <!-- navigation area on the top of the site -->
+            <nav class="bg navbar navbar-expand-lg navbar-light fixed-top" id="richtaxnav">
+                <div class="container-md text-white">
+                    <strong>
+                        <a class="navbar-brand" href="{{url_for ('index') }}">
+                            <img class="img-responsive text-white" title="Richtax"
+                                src="{{url_for('static', filename = 'img/logo_richtax.png')}}" alt="RICHTAX" id="logo">
+                        </a>
+                    </strong>
+                    <button class="navbar-toggler navbar-toggler-left" data-toggle="collapse"
+                        data-target="#navbarMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarMenu">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('index')}}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('input')}}">Quickstart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('documentation')}}">Documentation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('impressum')}}">Imprint</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- +++++++++++++++++++++++++++++++ MAIN WEBSITE AREA +++++++++++++++++++++++++++++++++++-->
+        <main>
+            <div class="container">
+                <div class="row">
+                    <h1>RICHTAX</h1>
+                    <h2>Wikidata reconciliation tool for TEI taxonomies</h2>
+                    <section class="content">
+                        <!-- short introduction to the app -->
+                        <h3>Welcome!</h3>
+                        <p>The Richtax App is a tool that enables you to easily enrich your TEI taxonomies with Linked Open Data references.</p>
+                        <p>Let your taxonomy terms be compared to <a href="https://www.wikidata.org/wiki/Wikidata:Main_Page" target="_blank">Wikidata</a> entries and their descriptions, and choose a matching Wikidata item to be linked to your taxonomy entry in an easy-to-handle user interface. The application will enrich your taxonomy entries with <a href="https://www.wikidata.org/wiki/Wikidata:Identifiers" target="_blank">Wikidata Q Identifiers</a> - unique identifiers that will bring your taxonomy one step closer to being a part of the <a href="https://en.wikipedia.org/wiki/Semantic_Web" target="_blank">Semantic Web</a> by using and meeting one of the principles of <a href="https://en.wikipedia.org/wiki/Linked_data#Linked_open_data" target="_blank">Linked Open Data</a>.</p>
+                        <img class="img-responsive col-xs-12 text-white zoom-small" title="Richtax process"
+                        src="{{url_for('static', filename = 'img/app-function-wide.png')}}" alt="app workflow" id="app-workflow">
+                        <p>It just takes a few simple steps to reconcile your data with:</p>
+                        <ol>
+                            <li>Copy and paste the taxonomy section of a valid TEI document or upload a valid TEI document that contains a taxonomy.</li>
+                            <li>The app then processes certain text data entries from your taxonomy and uses the <a href="https://query.wikidata.org/" target="_blank">Wikidata Query Service</a> to find relevant information.</li>
+                            <li>For every entry in your taxonomy a selection of results will be presented - as far as there are any matches. </li>
+                            <li>You will find a list of matches for every entry and then may decide which Wikidata entry fits the best with your taxonomy entry.</li>
+                            <li>After selecting matching Wikidata entries you can download your taxonomy and copy a customized snippet of a prefix definition for the taxonomy.</li>
+                        </ol>
+                        <p>To learn more about the Richtax App and how to make proper use of it, have a look at the <a href="{{url_for('documentation')}}" target="_blank">Documentation</a>.</p>
+
+
+                        <p><b>If you are ready to give it a try, <a href="{{url_for('input')}}">let's get started!</a></b> </p>
+
+
+
+                    </section>
+                </div>
+            </div>
+        </main>
+
+ <!-- +++++++++++++++++++++++++++++++  FOOTER WITH REFERENCES +++++++++++++++++++++++++++++++++++ -->
+ <footer class="footer mt-auto">
+
+    <!-- responsibility statement and contact options -->
+    <div class="container-lg-expand bg-gradient ">
+        <div
+            class="container-md footerwrap d-flex flex-wrap justify-content-between align-items-center">
+            <div class="text-white">
+                <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" id="licence-logo" /></a><br /><p class="licence-text m-0">This work is licensed under a <br/><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0 Intern. License</a>.</p>
+            </div>
+            <div class="footerlogo p-3">
+                <a href="https://www.uni-graz.at/de/" target="_blank">
+                    <img title="Universität Graz"
+                        src="{{url_for('static', filename = 'img/logo_uni.jpg')}}"
+                        alt="Universität Graz">
+                </a>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+
+ <!-- +++++++++++++++++++++++++++++++ EMBEDDED SCRIPTS +++++++++++++++++++++++++++++++++++ -->
+<script src="{{url_for('static', filename = 'js/jquery-3.4.1.slim.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/popper.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/jquery.dataTables.min.js')}}"></script>
+<script src="{{url_for('static', filename = 'js/richtax.js')}}"></script>
+
+</body>
+</html>
+

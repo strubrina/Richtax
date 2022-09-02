@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="de">
+    <!-- ++++++++++++++++++++++++++++++++++++++++ METADATA +++++++++++++++++++++++++++++++++++++++-->
+    <head>
+        <meta charset="utf-8" />
+        <meta name="description" content="Taxgarage / Creatax / Richtax / Tax-Reconciliation.">
+        <meta name="keywords" content="XML-TEI, Taxonomy, Reconciliation, Wikidata">
+        <meta name="author" content="Sabrina S">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Richtax - Data Enrichment</title>
+        <link rel="icon" type="image/x-icon" href="{{url_for('static', filename ='img/favicon.ico')}}">
+        <link rel="stylesheet"
+            href="{{url_for('static', filename = 'css/dataTables-bootstrap4-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/font-awesome-min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename = 'css/richtax.css')}}">
+    </head>
+
+    <body>
+        <div class="wrapper">
+        <!-- ++++++++++++++++++++++++++ HEADER WITH NAVIGATION AREA +++++++++++++++++++++++++++-->
+        <header>
+            <!-- navigation area on the top of the site -->
+            <nav class="bg navbar navbar-expand-lg navbar-light fixed-top" id="richtaxnav">
+                <div class="container-md text-white">
+                    <strong>
+                        <a class="navbar-brand" href="{{url_for ('index') }}">
+                            <img class="img-responsive text-white" title="Richtax"
+                                src="{{url_for('static', filename = 'img/logo_richtax.png')}}" alt="RICHTAX" id="logo">
+                        </a>
+                    </strong>
+                    <button class="navbar-toggler navbar-toggler-left" data-toggle="collapse"
+                        data-target="#navbarMenu">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarMenu">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('index')}}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('input')}}">Quickstart</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('documentation')}}">Documentation</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white" href="{{url_for('impressum')}}">Imprint</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <!-- +++++++++++++++++++++++++++++++ MAIN WEBSITE AREA +++++++++++++++++++++++++++++++++++-->
+        <main>
+            <div class="container">
+                <div class="row">
+                    <h1>RICHTAX</h1>
+                    <section class="content">
+                        <h3>Enrichment</h3>
+                        <p class="instruction-text m-0">Now choose the Wikidata entries that should be referrenced in your taxonomy.</p>
+
+                        <!-- ++++++++++++++++++++++++++++ SELECTION AREA FOR ENRICHMENT ++++++++++++++++++++++++++++-->
+                        <!-- form defining the route of the app that should be used
+                            when submitting the selected and enriched terms of the taxonomy -->
+                        <form method="post" action="/reconcile">
+
+                            <!-- starting a loop to view results of the wikidata query that was processed in the background -->
+                            {% for termtable in term_table_clean %}
+
+                            <!-- for the result headline it presents the xml:id, because the results for search term are not always the same
+                                as the SPARQL query always processes the terms in a different order -->
+                            <h4 class="tableheader">Results for xml:id <b>"{{ termtable[0][0][5] }}"</b></h3>
+                            <table id="taxdata" class="table table-striped table-hover table-responsive">
+
+                               <!-- if no matches, do not generate a table -->
+                                {% if termtable[0][0][0] == "No matches" %}
+                                <br />
+
+                                <!-- otherwise generate a table with options for selection -->
+                                {% else %}
+
+                                <!-- header for a search term of the taxonomy -->
+                                <thead>
+                                    <tr>
+                                        <th>Your choice</th>
+                                        {% for head in result_headerlist %}
+                                        <th>{{ head }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                {% endif %}
+
+                                <!-- table rows with all the result options for the search term of the taxonomy -->
+                                <fieldset name="formfield" id="termchoice_{{ termtable[0][0][5] }}">
+                                {% for termblock in termtable %}
+                                <tbody>
+                                    {% for termrow in termblock %}
+
+                                    <!-- if there are no matches at all for a search term a hidden row is generated
+                                        and a default value will be selected automatically to have a value corresponding to the search term to process later on -->
+                                    {% if termrow [0] == "No matches" %}
+                                        <tr><small class="text-muted ">No matches at all</small></tr>
+                                        <hr/>
+                                        <tr class="hidden-rows">
+                                            <td><input class="form-check-input" type="radio" name="{{ termrow[5] }}" id="{{ termrow[0] }}" value="{{ termrow[0] }}" checked> </td>
+                                            {% for item in termrow %}
+                                            <td> {{ item }} </td>
+                                            {% endfor %}
+                                        </tr>
+
+                                        <!-- if there are no results for one specific variant of a search term a hidden row is generated
+                                            and a default value will be selected automatically to have value corresponding to the search term to process later on -->
+                                        {% elif termrow[0] == "No results" %}
+                                        <tr><small class="text-muted">| No match for search term "{{ termrow[4] }}" |</small></tr>
+                                        <tr class="hidden-rows">
+                                            <td><input class="form-check-input" type="radio" name="{{ termrow[5] }}" id="{{ termrow[0] }}" value="{{ termrow[0] }}" checked> </td>
+                                            {% for item in termrow %}
+                                            <td> {{ item }} </td>
+                                            {% endfor %}
+                                        </tr>
+
+                                        <!-- if there is a mix of matches and missing results, for the missing results a hidden row is generated
+                                            and a default value will be selected automatically to have a value corresponding to the search term to process later on
+                                            in case no other result is selected by the user -->
+                                        <!-- generating the hidden row -->
+                                        {% else %}
+                                        <tr class="hidden-rows">
+                                            <td><input class="form-check-input" type="radio" name="{{ termrow[5] }}" id="No matches" value="No matches" checked></td>
+                                            <td>Dummy row</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+
+                                        <!-- generating visible rows for the manual selection by the user -->
+                                        <tr>
+                                            <td><input class="form-check-input" type="radio" name="{{ termrow[5] }}" id="{{ termrow[0] }}" value="{{ termrow[0] }}"> </td>
+                                            {% for item in termrow %}
+                                            {% if item.startswith("http") %}
+                                            <td><a href="{{ item }}" target="_blank">{{ item }}</a></td>
+                                            {% else %}
+                                            <td> {{ item }} </td>
+                                            {% endif %}
+                                            {% endfor %}
+                                        </tr>
+                                        {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                                {% endfor %}
+
+                                <!-- generating an additional table row to allow user to cancel any wrong selection, but to make sure that there is a value that can be handed over when putting back together the taxonomy for the download -->
+                                <tbody>
+                                <!-- hide the additional table if there are no matches for a taxonomy entry at all -->
+                                {% if termtable[0][0][0] == "No matches" %}
+                                <tr class="hidden-rows">
+                                    <td><input class="form-check-input" type="radio" name="{{ termtable[0][0][5] }}" id="{{ termtable[0][0][0] }}" value="{{ termtable[0][0][0] }}"></td>
+                                    <td class="text-small text-muted">Cancel selection</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                <!-- show this additional table if there are some results -->
+                                {% else %}
+                                <tr>
+                                    <td><input class="form-check-input" type="radio" name="{{ termtable[0][0][5] }}" id="{{ termtable[0][0][0] }}" value="{{ termtable[0][0][0] }}"></td>
+                                    <td class="text-muted"><small>Cancel selection</small></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                {% endif %}
+                                </tbody>
+                            </fieldset>
+                            </table>
+                            {% endfor %}
+
+                            <!-- field for user to enter a preferred namespace - if no namespace is choosen, the default namespace "wd:" will be generated -->
+                            <div>
+                                <h4>Wikidata namespace:</h4>
+                                <p class="instruction-text">Choose your prefix to replace http://www.wikidata.org/wiki/  - for example 'wd' or 'wikidata'</p>
+
+                                <input class="form-control" type="text" name="namespace" placeholder="Enter prefix (required)" required>
+                            </div>
+                            <p class="mt-3">For further information on namespaces refer to the <a href="{{url_for('documentation')}}" target="_blank">Documentation</a> (opens in a separate tab).</p>
+
+                            <!-- submit button to start the reconciliation of the inserted or uploaded taxonomy with the selected Wikidata QIdentifiers-->
+                            <div class="py-4">
+                                <button type="submit" class="btn btn-rt">Reconcile
+                                    data</button>
+                            </div>
+                        </form>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+
+       <!-- +++++++++++++++++++++++++++++++  FOOTER WITH REFERENCES +++++++++++++++++++++++++++++++++++ -->
+       <footer class="footer mt-auto">
+
+        <!-- responsibility statement and contact options -->
+        <div class="container-lg-expand bg-gradient ">
+            <div
+                class="container-md footerwrap d-flex flex-wrap justify-content-between align-items-center">
+                <div class="text-white">
+                    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" id="licence-logo" /></a><br /><p class="licence-text m-0">This work is licensed under a <br/><a rel="license" href="http://creativecommons.org/licenses/by/4.0/">CC BY 4.0 Intern. License</a>.</p>
+                </div>
+                <div class="footerlogo p-3">
+                    <a href="https://www.uni-graz.at/de/" target="_blank">
+                        <img title="Universität Graz"
+                            src="{{url_for('static', filename = 'img/logo_uni.jpg')}}"
+                            alt="Universität Graz">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+     <!-- +++++++++++++++++++++++++++++++ EMBEDDED SCRIPTS +++++++++++++++++++++++++++++++++++ -->
+    <script src="{{url_for('static', filename = 'js/jquery-3.4.1.slim.min.js')}}"></script>
+    <script src="{{url_for('static', filename = 'js/popper.min.js')}}"></script>
+    <script src="{{url_for('static', filename = 'js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename = 'js/jquery.dataTables.min.js')}}"></script>
+    <script src="{{url_for('static', filename = 'js/richtax.js')}}"></script>
+
+</body>
+</html>
