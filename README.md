@@ -10,13 +10,13 @@ It can be executed from your terminal and runs on localhost. So, you do not have
 Further information about the app and documentation can be found on the web pages when running the app. 
 
 
-## Starting the App 
+## Starting the App (on Windows)
 
 1. If you do not have Python installed, please download [Python 3.9.11](https://www.python.org/downloads/release/python-3911/) or a later version. If you are a Python beginner or have downloaded it the first time, don't forget to add the PATH to the environment variables. 
 
 2. Download the Richtax Code from GitHub, unzip it and store it on your computer.
 
-3. Open your terminal and check if Python was installed properly by entering `python --version` (The version of your Python distribution should be displayed now.)
+3. Open your terminal/shell and check if Python was installed properly by entering `py --version` (The version of your Python distribution should be displayed now.)
 
 4. Navigate to the folder where you have stored the app (for example: C:/Users/alex/Documents/richtax-main) 
 
@@ -24,11 +24,21 @@ Further information about the app and documentation can be found on the web page
 
 6. Then (in your venv or just like this) install the required moduls using `pip install -r requirements.txt`
 
-6. Run the flask app with the command `py main.py` 
+7. Run the flask app with the command `py main.py` 
 
-7. Press CTRL and click on the adress of localhost: http://127.0.0.1:8080
+8. Press CTRL + click on the adress of localhost: http://127.0.0.1:8080 (You can ignore the Warning about localhost just being a development server.)
 
-8. Your browser should open the application now - please refer to the documentation in the Richtax app to learn more about the workflow.
+9. Your browser should open the application now - please refer to the documentation in the Richtax app to learn more about the workflow.
 
-9. Have fun using Richtax :) 
+10. Have fun using Richtax :) 
+
+
+## Using the App
+
+Please refer to the documentation in the web app itself. 
+
+
+## Closing the App
+
+To quit the app just follow the instructions in the terminal and press CTRL + C. 
 
