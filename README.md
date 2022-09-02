@@ -1,18 +1,34 @@
 # Richtax
- Web App (Data enrichment and reconciliation with Wikidata ressources)
+ 
+ The Richtax App is a tool that enables you to easily enrich your TEI taxonomies with Linked Open Data references.
+ 
+Let your taxonomy terms be compared to Wikidata entries and their descriptions and choose a matching Wikidata item to be linked to your taxonomy entry in an easy-to-handle user interface. The application will enrich your taxonomy entries with Wikidata Q Identifiers - unique identifiers that will bring your taxonomy one step closer to being a part of the Semantic Web.
 
-## Starting the App on your localhost 
+The Richtax App is written in Python and based on [Flask](https://flask.palletsprojects.com/en/2.2.x/) and [Jinja](https://jinja.palletsprojects.com/en/3.1.x/). 
+It can be executed from your terminal and runs on localhost. So, you do not have to worry about uploading any of your files to the internet, but you always have them locally on your computer.
 
-1. If you do not have Python installed or an earlier version, please download [Python 3.9.11](https://www.python.org/downloads/release/python-3911/) as this is the version the web app was developed with. 
+Further information about the app and documentation can be found on the web pages when running the app. 
 
-2. Download the code, unzip it and store it on your computer.
 
-3. Open your terminal and navigate to the folder where you have stored the app (for example: C:/Users/alex/Documents/richtax-app) 
+## Starting the App 
 
-4. If you have Python installed and some other versions of the required moduls, I recommend creating a virtual environment. Here you can find [instructions](https://towardsdatascience.com/virtual-environments-for-absolute-beginners-what-is-it-and-how-to-create-one-examples-a48da8982d4b) on how to do this.
+1. If you do not have Python installed, please download [Python 3.9.11](https://www.python.org/downloads/release/python-3911/) or a later version. If you are a Python beginner or have downloaded it the first time, don't forget to add the PATH to the environment variables. 
 
-5. Then install the required moduls using `pip install -r requirements.txt`
+2. Download the Richtax Code from GitHub, unzip it and store it on your computer.
 
-6. Run the flask app entering `py main.py` into you terminal
+3. Open your terminal and check if Python was installed properly by entering `python --version` (The version of your Python distribution should be displayed now.)
 
-7. Read the documentation first and have fun trying! :) 
+4. Navigate to the folder where you have stored the app (for example: C:/Users/alex/Documents/richtax-main) 
+
+5. If you have some other versions of the required moduls from the requirements.txt installed, I recommend creating a virtual environment. Here you can find [helpful instructions](https://towardsdatascience.com/virtual-environments-for-absolute-beginners-what-is-it-and-how-to-create-one-examples-a48da8982d4b) on virtual environments. 
+
+6. Then (in your venv or just like this) install the required moduls using `pip install -r requirements.txt`
+
+6. Run the flask app with the command `py main.py` 
+
+7. Press CTRL and click on the adress of localhost: http://127.0.0.1:8080
+
+8. Your browser should open the application now - please refer to the documentation in the Richtax app to learn more about the workflow.
+
+9. Have fun using Richtax :) 
+
