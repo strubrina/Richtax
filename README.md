@@ -30,7 +30,7 @@ Further information about the app and documentation can be found on the web page
 
 9. Your browser should open the application now - please refer to the documentation in the Richtax app to learn more about the workflow.
 
-10. Have fun using Richtax :) 
+10. There are two example files attached in the example folder - have fun testing Richtax or using it for your own taxonomies :) 
 
 
 ## Using the App
