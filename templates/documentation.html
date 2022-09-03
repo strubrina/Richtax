@@ -45,7 +45,7 @@
                                 <a class="nav-link text-white" href="{{url_for('documentation')}}">Documentation</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-white" href="{{url_for('impressum')}}">Impressum</a>
+                                <a class="nav-link text-white" href="{{url_for('impressum')}}">Imprint</a>
                             </li>
                         </ul>
                     </div>
@@ -62,9 +62,9 @@
                          <!-- +++++++++++++++++++++++++++++++ DOCUMENTATION AND TIPPS +++++++++++++++++++++++++++++++++++-->
                         <h3>Documentation</h3>
 
-                        <!-- ++++++++++++++++++++++++++++++++++++++++ Desciption of the Richtax Tool and workflow of the web app +++++++++++++++++++++++++++++++++++++++++++++++++++-->
+                        <!-- ++++++++++++++++++++++++++++++++++++++++ Desciption of the Richtax Tool and workflow of the app +++++++++++++++++++++++++++++++++++++++++++++++++++-->
                         <h4>Scope of the Richtax Tool</h4>
-                        <p>What is this tool for? This web application was build to help anybody who is working with taxonomies in XMLfiles - almost exclusively TEI conform taxonomies - to enrich his/her data with data from Wikidata as a source of Linked Open Data. It should especially provide an easy-to-handle interface for a custom-made enrichment and reconciliation. Instead of entering every term manually into Wikidata to find suitable references, users might just insert or upload their taxonomy to find out what data ressources Wikidata has to offer for your entries. Of course, the program can not decide which is the best fitting term, but with only a few click you can tell the Richtax App which Wikidata ressources to reference and link to your taxonomy entries.</p>
+                        <p>What is this tool for? This application was build to help anybody who is working with taxonomies in XMLfiles - almost exclusively TEI conform taxonomies - to enrich his/her data with data from Wikidata as a source of Linked Open Data. It should especially provide an easy-to-handle interface for a custom-made enrichment and reconciliation. Instead of entering every term manually into Wikidata to find suitable references, users might just insert or upload their taxonomy to find out what data ressources Wikidata has to offer for your entries. Of course, the program can not decide which is the best fitting term, but with only a few click you can tell the Richtax App which Wikidata ressources to reference and link to your taxonomy entries.</p>
                         <img class="img-responsive col-xs-12 text-white app-pic zoom" title="Input"
                         src="{{url_for('static', filename = 'img/app_input.png')}}" alt="Input"/>
                         <img class="img-responsive col-xs-12 text-white app-pic zoom" title="Enrichment"
@@ -91,8 +91,8 @@
                                 alt="Jumping dot"
                                 class="docu-pic zoom-small"
                                 title="Jumping dot" /></div><p class="list-head">RULE #1</p><p>First of all, <b>please be patient</b> with this app. The processing might take one or two seconds per entry. <br/>So, when you click "Process data" after inserting or uploading your taxonomy and there are more than ten search terms to process, just lean back a bit and take a deep breath :) </p><p>If you are not sure, if the app crashed or still processes your data, just have a glance at the top of your browser tab: if you see a little dot jumping continously from left to right, your input is just being processed.</p></li>
-                            <li  class="list-group-item"><p class="list-head">RULE #2</p><p></p>You may insert or upload a <b>valid</b> taxonomy in a TEI file or a taxonomy in a random xml file that meets certain criteria.</p></li>
-                            <li  class="list-group-item"><p class="list-head">RULE #3</p><p></p>You should insert or upload <b>only one taxonomy (TODO???) at a time.</b></p></li>
+                            <li  class="list-group-item"><p class="list-head">RULE #2</p><p></p>Your inserted taxonomy or the whole upload file has to be a <b>valid</b> taxonomy according to the standards and has to meet all of the criteria that is established here.</p></li>
+                            <li  class="list-group-item"><p class="list-head">RULE #3</p><p></p>If you want to <b>process two or more taxonomies at a time</b>, make sure those taxonomies are nested inside another element. This can be a &lt;taxonomy&gt; element as well,  but the root element of your input must then be any other element but a &lt;taxonomy&gt; element.</p></li>
                             <li  class="list-group-item"><div class="imagefloat img-portrait"><img
                                 src="{{url_for('static', filename = 'img/category.png')}}"
                                 alt="Category"
@@ -132,7 +132,7 @@
                         <p>As some users only insert a taxonomy without the parent nodes and others upload a whole TEI file, the Richtax App will just provide you with the code snippet, so you can paste it into your taxonomy or do whatever you wish to do with it :)</p>
 
                         <h4>Further Developement and Maintenance </h4>
-                        <p>This is or let's already say was "only" a small test project and my first contact with Flask web applications and Jinja. Also, as my Python skills are still very basic I am pretty sure the functions of this app could have been written in a much less complex and nicer style. However, everyone is free to improve this app. I might not want to see it ever again and therefore can not guarantee any error fixing in the future. [Sabrina S., September 2nd, 2022.]</p>
+                        <p>This is or let's already say was "only" a small test project and my first contact with Flask applications and Jinja. Also, as my Python skills are still very basic I am pretty sure the functions of this app could have been written in a much less complex and nicer style. However, everyone is free to improve this app. I might not want to see it ever again and therefore can not guarantee any error fixing in the future. [Sabrina S., September 2nd, 2022.]</p>
 
                     </section>
                 </div>

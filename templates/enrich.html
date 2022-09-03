@@ -158,7 +158,7 @@
                                 <!-- hide the additional table if there are no matches for a taxonomy entry at all -->
                                 {% if termtable[0][0][0] == "No matches" %}
                                 <tr class="hidden-rows">
-                                    <td><input class="form-check-input" type="radio" name="{{ termtable[0][0][5] }}" id="{{ termtable[0][0][0] }}" value="{{ termtable[0][0][0] }}"></td>
+                                    <td><input class="form-check-input" type="radio" name="{{ termtable[0][0][5] }}" id="{{ termtable[0][0][0] }}" value="No matches"></td>
                                     <td class="text-small text-muted">Cancel selection</td>
                                     <td></td>
                                     <td></td>
@@ -169,7 +169,7 @@
                                 <!-- show this additional table if there are some results -->
                                 {% else %}
                                 <tr>
-                                    <td><input class="form-check-input" type="radio" name="{{ termtable[0][0][5] }}" id="{{ termtable[0][0][0] }}" value="{{ termtable[0][0][0] }}"></td>
+                                    <td><input class="form-check-input" type="radio" name="{{ termtable[0][0][5] }}" id="{{ termtable[0][0][0] }}" value="No matches"></td>
                                     <td class="text-muted"><small>Cancel selection</small></td>
                                     <td></td>
                                     <td></td>

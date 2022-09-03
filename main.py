@@ -1,4 +1,3 @@
-# Virtuelle Umgebung aktivieren: .\venv\Scripts\activate
 #############################################################################################
 # IMPORT SECTION
 
@@ -12,9 +11,9 @@ import xml.etree.ElementTree as ET
 import xmltodict
 
 ##############################################################################################
-# INITIALISATION AND PREPROCESSING
+# INITIALIZATION AND PREPROCESSING
 
-# initialise flask app
+# initialize flask app
 app = Flask(__name__)
 
 # create a directory for input inserted or uploaded by users
@@ -58,7 +57,7 @@ def impressum():
 
 #############################################################################################
 # DATA PROCESSING FUNCTIONS - STARTING THE APP WORKFLOW
-# the following 2 app routes are initialised by hitting the submit button (after users insert or upload files)
+# the following 2 app routes are initialized by hitting the submit button (after users insert or upload files)
 
 
 #######################################
@@ -128,22 +127,26 @@ def process_data():
     if os.path.exists(os.path.join(uploads_dir, xml_input_file)) == True:
 
         try:
-            # parse input file with elementtree parser  to check if there is a taxonomy in the file
+            # parse input file with element tree parser to check if there is a taxonomy in the file
             global tree
             tree = ET.parse(os.path.join(uploads_dir, xml_input_file))
+
+            # get the first element of the tree
             root = tree.getroot()
 
-            print(root.tag)
-            print(root.find("./taxonomy"))
-            print(root.find(".//taxonomy"))
-            print(root.find('.//{http://www.tei-c.org/ns/1.0}taxonomy'))
-            print(root.find('.//{http://www.tei-c.org/ns/1.0}taxonomy'))
-
             # return an error message if neither the root element is a taxonomy element nor at any other a taxonomy can be found in the uploaded file
-            if  root.tag != "taxonomy" and root.find("./taxonomy") == None \
-                and "{http://www.tei-c.org/ns/1.0}taxonomy" and root.find('.//{http://www.tei-c.org/ns/1.0}taxonomy') == None:
+            if  root.tag != "taxonomy" and root.find("./taxonomy") == None and root.find(".//taxonomy")\
+                and root.tag != "{http://www.tei-c.org/ns/1.0}taxonomy" and root.find('./{http://www.tei-c.org/ns/1.0}taxonomy') == None \
+                    and root.find('.//{http://www.tei-c.org/ns/1.0}taxonomy') == None:
                 missing_msg = "There is no (valid) taxonomy in your input."
                 return render_template('retry.html', missing_msg = missing_msg)
+
+
+            # return an error message if there are no category elements inside the taxonomy as this means that it is empty
+            elif root.find("./category") == None and root.find(".//category") == None \
+                    and root.find('./{http://www.tei-c.org/ns/1.0}category') == None and root.find('.//{http://www.tei-c.org/ns/1.0}category') == None:
+                empty_msg = "Your input seems to be empty."
+                return render_template('retry.html', empty_msg = empty_msg)
 
             else:
 
@@ -160,13 +163,13 @@ def process_data():
 
         except Exception as e:
             # ask user to insert valid data if input is not processable, because of failed parsing
-            empty_msg = "Your input seems to be empty or invalid."
-            return render_template('retry.html', empty_msg = empty_msg)
+            invalid_msg = "Your input seems to be invalid."
+            return render_template('retry.html', invalid_msg = invalid_msg)
 
 
     # return an error message if the input file was not created correctly
     else:
-        upload_error_msg = "An error occured during the upload of your data."
+        upload_error_msg = "An error occurred during the upload of your data."
         return render_template('retry.html', upload_error_msg = upload_error_msg)
 
 
@@ -176,18 +179,20 @@ def process_data():
 #processing the provided taxonomy
 def process_taxonomy():
 
-     # check if the taxonomy only contains catDesc elements or also term elements
+    # check if the taxonomy only contains catDesc elements or also term elements
+    # this check is for uploads with normal XML files, but also for TEI files which do always produce namespaces that have to be considered as well
     global catDesc_check
-    catDesc_check = tree.find('.//catDesc')
+    catDesc_check = tree.find(".//catDesc") and tree.find('.//{http://www.tei-c.org/ns/1.0}catDesc')
     global catTerm_check
-    catTerm_check = tree.find('.//catDesc/term')
-    print(catTerm_check)
+    catTerm_check = tree.find('.//term')
+    global catTerm_TEI_check
+    catTerm_TEI_check = tree.find('.//{http://www.tei-c.org/ns/1.0}term')
 
     global cols
     global rows
 
     # create columns and rows for a panda dataframe
-    # for english taxonomies make two versions of search terms:
+    # for English taxonomies make two versions of search terms:
     # one with the first letter being lower case and another with upper case word beginnings
     if xml_language == 'en':
         cols = ["xml_id", "taxTerm", "taxTerm_capitals", "taxTerm_lowercase"]
@@ -195,8 +200,7 @@ def process_taxonomy():
         global language
         language = 'English'
 
-
-    # for german taxonomies use only search terms starting with upper case
+    # for Germantaxonomies use only search terms starting with upper case
     else:
         cols = ["xml_id", "taxTerm", "taxTerm_capitals"]
         rows = []
@@ -215,12 +219,13 @@ def process_taxonomy():
         else:
             rows.append({"xml_id": xml_id})
 
+    # create a panda dataframe for further processing
     global xml_df
     xml_df = pd.DataFrame(rows, columns = cols)
 
 
     # checking if the text content is written directly into the catDesc or into nested term elements
-    if catTerm_check is None:
+    if catTerm_check is None and catTerm_TEI_check is None:
 
         # creating a variable to save list of search terms
         global tax_term
@@ -228,32 +233,30 @@ def process_taxonomy():
         # generating a list with the text content (character data) of the catDesc elements
         tax_term = xdata.getElementsByTagName("catDesc")
 
-        return process_searchterms()
+        # looking into the catDesc element and only process the content if it is text and if there is no other child element inside
+        if tax_term.item(0).childNodes.item(0).nodeName == "#text" and tax_term.item(0).childNodes.item(1) == None:
+               return process_searchterms()
 
-
-        #if  tax_term.item(0).childNodes.item(1).localName != ("term"):
-            #catDesc_nested_msg = "There seem to be elements inside the <catDesc> elements that are not supported."
-            #return render_template('retry.html', catDesc_nested_msg = catDesc_nested_msg)
-        #else:
-            #return process_searchterms()
-
+        # telling the user that there seems to be something nested in catDesc that is not a term
+        else:
+            catDesc_nested_msg = "There seem to be elements inside the <catDesc> elements that are not supported."
+            return render_template('retry.html', catDesc_nested_msg = catDesc_nested_msg)
 
     else:
         # generating a list with the text content (character data) of the term elements
         tax_term = xdata.getElementsByTagName("term")
 
-        print("NODENAME")
-        print(tax_term.item(0).nodeName)
-
-        if tax_term.item(0).nodeName != "term":
+        # only support term elements that have text as childNodes
+        if tax_term.item(0).childNodes.item(0).nodeName != "#text":
             term_nested_msg = "There seem to be elements inside the <term> elements that are not supported."
             return render_template('retry.html', term_nested_msg = term_nested_msg)
 
+        # process the data if there is only text in the term element
         else:
             return process_searchterms()
 
 
-
+# process of the text content from the elements of the element tree
 def process_searchterms():
 
     # create further lists of variations of the search term:
@@ -262,26 +265,27 @@ def process_searchterms():
     catListCapitals = []
     catListSmallLetters = []
 
-
     # append the text data from the nodelist of catDesc or term elements to the lists
     for tt in tax_term:
 
+        # strip the leading and trailing spaces for better processing of the text data
         item_original = (tt.firstChild.nodeValue).strip()
         item_capitals = (tt.firstChild.nodeValue.capitalize()).strip()
         item_lowercase = (tt.firstChild.nodeValue.lower()).strip()
 
+        #append the stripped terms to different lists
         catListOriginal.append(item_original)
         catListCapitals.append(item_capitals)
         catListSmallLetters.append(item_lowercase)
 
-    # for english taxonomies add one column for lowercase spelling
+    # for English taxonomies add one column for lowercase spelling
     if xml_language == 'en':
 
         xml_df["taxTerm_original"] = catListOriginal
         xml_df["taxTerm_capitals"] = catListCapitals
         xml_df["taxTerm_lowercase"] = catListSmallLetters
 
-    # for german taxonomies there is no need for a column with lowercase spelling
+    # for Germantaxonomies there is no need for a column with lowercase spelling
     else:
         xml_df["taxTerm_original"] = catListOriginal
         xml_df["taxTerm_capitals"] = catListCapitals
@@ -299,12 +303,10 @@ def process_searchterms():
             rowlist = [rows.taxTerm_original, rows.taxTerm_capitals, rows.taxTerm_lowercase, rows.xml_id]
             tablelist.append(rowlist)
 
-
-        # for german taxonomies the lists do not include lowercase word beginnings
+        # for Germantaxonomies the lists do not include lowercase word beginnings
         else:
             rowlist = [rows.taxTerm_original, rows.taxTerm_capitals, rows.xml_id]
             tablelist.append(rowlist)
-
 
     # continue with query function
     return wikidata_query()
@@ -332,6 +334,7 @@ def wikidata_query():
     # take one row of the dataframe that is now saved in a list
     for termlist in tablelist:
         # First element of termlist contains original spelling of search term
+        # Displaying the search process on the terminal :)
         print("Looking for the term " + str(termlist[0]))
         processing_termlist.append(termlist[0])
 
@@ -343,7 +346,8 @@ def wikidata_query():
 
         # take all variants of one term and try to find Wikidata entries
         for term in termset:
-            # TODOOO - wenn man 3. und 4. bedingung rausnimmt, mehr ergebnisse - aber ungenauer und nicht so performant?
+            # this is the query that is send to the Wikidata API - it looks for the search terms and sets the language to whatever language was choosen by the user
+            # there are more results when we cancel the 3rd and the 4th condition, but it seems to be also less precise and not so performant
             sparql.setQuery(
             """SELECT DISTINCT ?item ?itemLabel ?itemDescription WHERE{
                 ?item ?label \"""" + term + """\"@""" + xml_language + """.
@@ -371,8 +375,8 @@ def wikidata_query():
                     if xml_language == 'en':
                         term_rows.append(["No results", "-", "-", "-", term, termlist[3]])
 
-                    # append rows that indicate missing results for german queries
-                    # for german taxonomies the xml:id is on index no. 2
+                    # append rows that indicate missing results for Germanqueries
+                    # for Germantaxonomies the xml:id is on index no. 2
                     else:
                         term_rows.append(["No results", "-", "-", "-", term, termlist[2]])
 
@@ -399,8 +403,8 @@ def wikidata_query():
                         if xml_language == 'en':
                             term_rows.append([wd_qnr, wd_itemLabel, wd_itemDescription, wd_url, term, termlist[3]])
 
-                            # append the results for german queries - every term may have various Wikidata entries
-                        # for german taxonomies the xml:id is on index no. 2
+                            # append the results for Germanqueries - every term may have various Wikidata entries
+                        # for Germantaxonomies the xml:id is on index no. 2
                         else:
                             term_rows.append([wd_qnr, wd_itemLabel, wd_itemDescription, wd_url, term, termlist[2]])
 
@@ -411,7 +415,7 @@ def wikidata_query():
                 # put all results for different variants of one search term into container list
                 cat_data.append(term_data)
 
-            # for errors with the sparql query provide an error message
+            # for errors with the sparql query provide an error message in the terminal
             except Exception as e:
                         print(e)
 
@@ -423,7 +427,7 @@ def wikidata_query():
     global result_headerlist
     result_headerlist = ["QIdentifier", "WikidataLabel", "Description", "WikidataLink", "SearchTerm", "XMLID"]
 
-    # intialize an empty container list to append results
+    # initialize an empty container list to append results
     term_table = []
 
     # store every result for one search term in a seperate row
@@ -448,7 +452,7 @@ def wikidata_query():
             else:
                 term_table_clean.append(term_block)
 
-        # for category elements that do not have an xml:id or for German search terms there might be only 2 termblocks (for upper and lower case of the original term)
+        # for category elements that do not have an xml:id or for Germansearch terms there might be only 2 termblocks (for upper and lower case of the original term)
         elif len(term_block) == 2:
             if term_block[0][0][0] == term_block[1][0][0]:
                 term_table_clean.append([[["No matches", "-", "-", "-", "-" , str(term_block[0][0][5])]]])
@@ -495,7 +499,7 @@ def enrich():
 ##########################################################################################
 # PROCESS DATATABLES AFTER SELECTION / MANIPULATION THROUGH USER
 
-# the following processes are intialized by the user submitting his selection of Wikidata references
+# the following processes are initialized by the user submitting his selection of Wikidata references
 @app.route("/reconcile", methods=['POST'])
 
 # processing the selected data from the datatables
@@ -506,7 +510,6 @@ def reconcile():
 
         # save the xml:ids plus the corresponding Wikidata Q Identifier that was slected by the user into dictionary
         list_ids = request.form.to_dict(flat=False)
-        list_xml_ids = list_ids.keys()
 
         #initialize an empty container list to save the Wikidata Q Identifiers
         list_wd_ids = []
@@ -522,35 +525,62 @@ def reconcile():
         if os.path.exists(os.path.join(uploads_dir, xml_input_file)) == True:
             input_xml_tree = ET.parse(os.path.join(uploads_dir, xml_input_file))
 
-
+            # look for the root element of the element tree
             root = input_xml_tree.getroot()
 
+            # check if there are category elements in the tree
+            if root.find(".//category") != None:
 
-            # simultaneously iterate through category elements in the xml tree and in the Wikidata Q Identifier list generated by user's choice
-            # add a corresp attribute to every category element and fill it with the corresponding value of the Wikidata Q Identifier list
-            for elem,wd_id in zip(root.iter('category'), list_wd_ids):
+                # simultaneously iterate through category elements in the xml tree and in the Wikidata Q Identifier list generated by user's choice
+                # add a corresp attribute to every category element and fill it with the corresponding value of the Wikidata Q Identifier list
+                for elem,wd_id in zip(root.iter('category'), list_wd_ids):
 
-                # only set correspond attribute if there is a Q Identifier available
-                if str(wd_id) != "No results" and str(wd_id) != "No matches":
-                    elem.set("corresp", str(namespace) + ":" + str(wd_id))
+                    # only set correspond attribute if there is a Q Identifier available
+                    if str(wd_id) != "No results" and str(wd_id) != "No matches":
+                        elem.set("corresp", str(namespace) + ":" + str(wd_id))
 
+            # there might also be TEI elements with namespaces that need to be handled as well
+            else:
+
+                # add also here corresp attributes to every TEI category element and fill it with the corresponding value of the Wikidata Q Identifier list
+                for elem,wd_id in zip(root.iter('{http://www.tei-c.org/ns/1.0}category'), list_wd_ids):
+
+                    # only set correspond attribute if there is a Q Identifier available
+                    if str(wd_id) != "No results" and str(wd_id) != "No matches":
+                        elem.set("corresp", str(namespace) + ":" + str(wd_id))
 
 
             # save the enriched xml tree to an output file
             input_xml_tree.write(os.path.join(downloads_dir, xml_output_file), encoding="utf-8", xml_declaration=True, short_empty_elements=True)
 
-
-            # create a new output container (for removing blank lines) -  TODOOO - note: only possible when reading seperate lines from file
+            # create a new output container (for removing blank lines)
             clean_xml_output = ""
 
-            # write seperate lines to the clean output file
+            # open the generated output file write seperate lines to the clean the output file
             with open(os.path.join(downloads_dir, xml_output_file), "r", encoding="utf-8") as f:
-                for line in f:
-                    print(line)
-                    if not line.isspace():
-                        clean_xml_output+=line
 
-            print(clean_xml_output)
+                # go through every line of the output file
+                for line in f:
+
+                    # ignore blank lines
+                    if not line.isspace():
+                        # in case during the processing there were namespace abbreviations generated in TEI files remove the namespace-pattern
+
+                        # first clean the TEI tag and add clean lines
+                        if "ns0:TEI xmlns:ns0" in str(line):
+
+                            line = str(line).replace("ns0:TEI xmlns:ns0","TEI xmlns")
+                            clean_xml_output+=line
+
+                        # then clean all other tags and add clean lines
+                        elif "ns0:" in str(line):
+                            line = str(line).replace("ns0:", "")
+                            clean_xml_output+=line
+
+                        # for processed data without elements just write every single line to the new ouptut document
+                        else:
+                            clean_xml_output+=line
+
 
             # write enriched taxonomy to the output file
             f = open(os.path.join(downloads_dir, xml_output_clean), 'w', encoding="utf-8")
@@ -560,7 +590,7 @@ def reconcile():
             # provide download page of web app
             return render_template('download.html', namespace = namespace)
 
-        # provide error message if anything failed in reconcilation process
+        # provide error message if anything failed in reconciliation process
         else:
             return "Unfortunately, the reconciliation failed."
 
@@ -568,7 +598,7 @@ def reconcile():
 ##########################################################################################
 # DOWNLOAD PROCESS
 
-# the following processes are intiliazed by
+# the following processes are initiliazed by
 @app.route('/download')
 def download():
     # allow download of output file for users by clicking the download button
@@ -576,9 +606,11 @@ def download():
     if os.path.exists(os.path.join(downloads_dir, xml_output_clean)) == True:
         path = os.path.join(downloads_dir, xml_output_clean)
         return send_file(path, as_attachment=True, attachment_filename="enriched_output.xml")
+
+    # return an error message if the download is not possible
     else:
-        path = os.path.join(downloads_dir, xml_output_file)
-        return send_file(path, as_attachment=True, attachment_filename="enriched_upload.xml")
+        download_error_msg = "Sorry, but something went wrong with the download option."
+        return render_template('download.html', download_error_msg = download_error_msg)
 
 
 
