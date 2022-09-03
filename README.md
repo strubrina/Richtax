@@ -18,13 +18,13 @@ Further information about the app and documentation can be found on the web page
 
 3. Open your terminal/shell and check if Python was installed properly by entering `py --version` (The version of your Python distribution should be displayed now.)
 
-4. Navigate to the folder where you have stored the app (for example: C:/Users/alex/Documents/richtax-main) 
+4. Navigate to the folder where the app is stored (for example: C:/Users/alex/Documents/richtax-main) 
 
-5. If you have some other versions of the required moduls from the requirements.txt installed, I recommend creating a virtual environment. Here you can find [helpful instructions](https://towardsdatascience.com/virtual-environments-for-absolute-beginners-what-is-it-and-how-to-create-one-examples-a48da8982d4b) on virtual environments. 
+5. If there might be interferences with other versions of the required moduls for this app, I recommend creating a virtual environment. Here you can find [helpful instructions](https://towardsdatascience.com/virtual-environments-for-absolute-beginners-what-is-it-and-how-to-create-one-examples-a48da8982d4b) on virtual environments. 
 
 6. Then (in your venv or just like this) install the required moduls using `pip install -r requirements.txt`
 
-7. Run the flask app with the command `py main.py` 
+7. Run the app with the command `py main.py` 
 
 8. Press CTRL + click on the adress of localhost: http://127.0.0.1:8080 (You can ignore the Warning about localhost just being a development server.)
 
@@ -35,7 +35,9 @@ Further information about the app and documentation can be found on the web page
 
 ## Using the App
 
-Please refer to the documentation in the web app itself. 
+Please refer to the documentation in the application itself. 
+
+In case the app crashes, just go to your terminal and press CTRL + C and restart the app. 
 
 
 ## Closing the App
