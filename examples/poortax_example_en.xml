@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+    <teiHeader>
+        <fileDesc>
+            <titleStmt>
+                <title>Title</title>
+            </titleStmt>
+            <publicationStmt>
+                <p>Publication Information</p>
+            </publicationStmt>
+            <sourceDesc>
+                <p>Information about the source</p>
+            </sourceDesc>
+        </fileDesc>
+        <encodingDesc>
+            <classDecl>     
+                <taxonomy>
+                    <category xml:id="poe">
+                        <catDesc>Poetry</catDesc>
+                        <category xml:id="sonn">
+                            <catDesc>Sonnet</catDesc>
+                            <category xml:id="shakesSonn">
+                                <catDesc>Shakespearean Sonnet</catDesc>
+                            </category>
+                            <category xml:id="petraSonn">
+                                <catDesc>Petrarchan Sonnet</catDesc>
+                            </category>
+                        </category>
+                        <category xml:id="met">
+                            <catDesc>Metrical Categories</catDesc>
+                            <category xml:id="ft">
+                                <catDesc>Metrical Feet</catDesc>
+                                <category xml:id="iamb">
+                                    <catDesc>Iambic</catDesc>
+                                </category>
+                                <category xml:id="troch">
+                                    <catDesc>trochaic</catDesc>
+                                </category>
+                            </category>
+                            <category xml:id="ftNm">
+                                <catDesc>Number of feet</catDesc>
+                                <category xml:id="penta">
+                                    <catDesc>Pentameter</catDesc>
+                                </category>
+                                <category xml:id="tetra">
+                                    <catDesc>Tetrameter</catDesc>
+                                </category>
+                            </category>
+                        </category>
+                    </category>
+                </taxonomy>
+            </classDecl>
+        </encodingDesc>
+    </teiHeader>
+    <text>
+        <body>
+            <p>Some text here.</p>
+        </body>
+    </text>
+</TEI>
+
+

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taxonomy>
+    <category xml:id="Getreide">
+        <catDesc>
+            <term>Getreide</term>
+        </catDesc>
+        <category xml:id="Roggen">
+            <catDesc>
+                <term>Roggen</term>
+            </catDesc>
+        </category>
+        <category xml:id="Weizen">
+            <catDesc>
+                <term>Weizen</term>
+            </catDesc>
+        </category>
+        <category xml:id="Gerste">
+            <catDesc>
+                <term>Gerste</term>
+            </catDesc>
+        </category>
+        <category xml:id="Huntäs">
+            <catDesc>
+                <term>Huntäs</term>
+            </catDesc>
+        </category>
+        <category xml:id="Mehl">
+            <catDesc>
+                <term>Mehl</term>
+            </catDesc>
+        </category>
+        <category xml:id="Weizenmehl">
+            <catDesc>
+                <term>Weizenmehl</term>
+            </catDesc>
+        </category>
+        <category xml:id="Roggenmehl">
+            <catDesc>
+                <term>Roggenmehl</term>
+            </catDesc>
+        </category>
+    </category>
+</taxonomy>
